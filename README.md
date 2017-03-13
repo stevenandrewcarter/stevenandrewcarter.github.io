@@ -1,12 +1,9 @@
-# A Blog
+# Patterns not Included
 
-Here is some test stuff for my site
+This is my personal site for creating blog posts about interesting things I do and think about. I will be using the built in Jekyll
+stuff from github and will include the relevant additions below.
 
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{post.date}} {{ post.title }}</a>
-      {{ post.excerpt }}
-    </li>
-  {% endfor %}
-</ul>
+# References
+
+(Jekyll)[https://jekyllrb.com]
+(Whiteglass)[https://github.com/yous/whiteglass/blob/master/README.md]
