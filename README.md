@@ -5,5 +5,5 @@ stuff from github and will include the relevant additions below.
 
 # References
 
-(Jekyll)[https://jekyllrb.com]
-(Whiteglass)[https://github.com/yous/whiteglass/blob/master/README.md]
+* (Jekyll)[https://jekyllrb.com]
+* (Whiteglass)[https://github.com/yous/whiteglass/blob/master/README.md]
