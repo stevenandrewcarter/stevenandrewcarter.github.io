@@ -3,7 +3,6 @@ layout: post
 title:  "When Docker is the tool, everything is a container"
 date:   2018-01-04 14:02:00 +0200
 categories: General
-published: false
 ---
 
 I recently had an interesting situation occur with my experiences with containers
@@ -26,9 +25,8 @@ COPY --from=0 /meteor/output /application
 RUN node /application/server.js
 ```
 
-So far, nothing really weird is happening here, the first part of the Dockerfile is building
-the build container, and the second part is taking the result of the first as the application
-to run. This basically means we end up with a pretty small node based container (~600mb) instead
+The first part of the Dockerfile is building the build container, and the second part is taking the result of the first 
+as the application to run. This basically means we end up with a pretty small node based container (~600mb) instead
 of the base meteor container (~1gb). Of course, we didn't stop there...
 
 # The Hammer
@@ -73,7 +71,28 @@ run a virtualized window manager. Of course, it does make the Dockerfile a littl
 ```
 FROM base-meteor:latest
 ADD ./src /meteor
-RUN apt-get update ...
+RUN apt-get install -y \
+  xvfb \
+  x11-xkb-utils \
+  xfonts-100dpi \
+  xfonts-75dpi \
+  xfonts-scalable \
+  xfonts-cyrillic \
+  x11-apps \
+  clang \
+  libdbus-1-dev \
+  libgtk2.0-dev \
+  libnotify-dev \
+  libgnome-keyring-dev \
+  libgconf2-dev \
+  libasound2-dev \
+  libcap-dev \
+  libcups2-dev \
+  libxtst-dev \
+  libxss1 \
+  libnss3-dev \
+  gcc-multilib \
+  g++-multilib
 CMD npm run-script meteor-full-test
 ```
 
