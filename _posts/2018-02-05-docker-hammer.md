@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "When Docker is the tool, everything is a container"
-date:   2018-01-04 14:02:00 +0200
+date:   2018-02-19 14:02:00 +0200
 categories: General
 ---
 
