@@ -20,7 +20,7 @@ facebook_image:
 google_analytics:
 
 # Plugins
-gems:
+plugins:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
@@ -28,7 +28,6 @@ gems:
 # Outputting
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
-paginate: 5
 
 # jekyll-archives
 jekyll-archives:
