@@ -243,12 +243,13 @@ looks like this at the watch.
 ```json
 "transform": {
   "script": {
-    "source": "
+    "source": """
       ctx.vars.result=new ArrayList();
       def hits = ctx.payload.hits.hits;
       for (int j = 0; j < hits.size(); j++) {
         ctx.vars.result.add(((double) hits[j]._source.system.memory.free / hits[j]._source.system.memory.total) * 100);
-      }"
+      }
+    """
   }
 },
 ```
@@ -264,14 +265,15 @@ well to something like the following...
 ```json
 "condition": {
   "script" : {
-    "source" : "
+    "source" : """
     def results = ctx.vars.results;
     for (int i=0; i < results.size(); i++) {
       if (result[i] > 20) {
         return true;
       }
     }
-    return false;"
+    return false;
+  """
   }
 }
 ```
