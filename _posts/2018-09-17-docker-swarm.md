@@ -82,4 +82,9 @@ barely need anything else.
 # Build a swarm
 
 Building a swarm is not hard, you really just have to select which nodes are the
-managers and which nodes are workers.
+managers and which nodes are workers. For a local environment you could cheat and
+make all of the nodes managers, but for good practice you should maybe make a
+split between the different types. Just remember that only managers can actually
+do things in the swarm (such as deploying stacks).
+
+You can configure the docker machines to work as a swarm with the following commands
