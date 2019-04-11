@@ -69,3 +69,6 @@ when we consider our swarm, and it will be nice if our terraform play can determ
 So we will need some logic in order to determine the state of our cluster, which is when terraform starts to show a few
 problems. Mainly that terraform does not have logical operators (As of version 0.11 at least). So instead of having a 
 complex work around, we can instead just invoke bash scripts instead. 
+
+As an example you can look at [this repo](https://github.com/stevenandrewcarter/terraform-docker-machine), which gives
+a simple example of how to create the docker machines using terraform. 
