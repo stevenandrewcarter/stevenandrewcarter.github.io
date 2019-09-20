@@ -6,7 +6,7 @@ categories: General
 published: false
 ---
 
-In order to test a local docker swarm cluster you will quickly find a fairly cool tool called [Docker Machine](), which
+In order to test a local docker swarm cluster you will quickly find a fairly cool tool called [Docker Machine](https://docs.docker.com/machine/), which
 automates the building of a local cluster. The first time you start playing around with it you will quickly see how easy
 it can be to create docker machines and _manually_ add them to a docker swarm. The sort of commands would look like the
 following
@@ -22,12 +22,11 @@ docker-machine ssh worker2 "docker swarm join"
 ```
 
 The only problem with this approach is that you will quickly find that tearing down and creating the swarm can become a
-little tedious. Also, you may want to build something a little more custom when building the swarm (Installing certs for
-example).
+little tedious. Also, you may want to build something a little more custom when building the swarm (Installing certificates for example).
 
 # Using Terraform
 
-Luckily we can use a simple tool to perform the automation for us instead. [Terraform]() provides a pretty amazing
+Luckily we can use a simple tool to perform the automation for us instead. [Terraform](https://www.terraform.io/) provides a pretty amazing
 framework for spinning up our cluster. As of this article, there is no real provider that will automatically build
 a solution like this. Instead we have to build a custom module that performs this type of operation. The steps below
 are what we would want in order to achieve this.
@@ -46,7 +45,7 @@ given above. The problem with this approach is that the benefits of terraform re
 pain to extend out the script with additional features (for example customizing the docker machines). Initally I did
 just use a bash script, but quickly felt it was out of place with the rest of the terraform configuration that was being
 applied to the rest of the cluster. For example, when I wanted to deploy services to the cluster I had to invoke a
-docker machine command to find out the clusters IP. 
+docker machine command to find out the IP was for the manager of the cluster. 
 
 When you start using terraform remote state instead, you can get a much better flow from creating the swarm to adding
 services to the swarm. So, in order to separate our concepts, we would actually need two modules, one for the docker
@@ -56,7 +55,7 @@ connection instead.
 
 ## Docker Machine Module
 
-Terraform by default attempts to reach eventual consistency and idempotenticy by default. It achieves this by keeping a
+Terraform by default attempts to reach eventual consistency and idempotency by default. It achieves this by keeping a
 state and only implementing the difference between the existing state and the terraform configuration. In our case, 
 docker machine also adds a certain amount of idempotency by default. For example if you attempt to create a machine
 called _manager_, and attempt to create a docker machine with the same name, then the second call will fail. The problem
@@ -71,4 +70,4 @@ problems. Mainly that terraform does not have logical operators (As of version 0
 complex work around, we can instead just invoke bash scripts instead. 
 
 As an example you can look at [this repo](https://github.com/stevenandrewcarter/terraform-docker-machine), which gives
-a simple example of how to create the docker machines using terraform. 
+a simple example of how to create the docker machines using terraform.
