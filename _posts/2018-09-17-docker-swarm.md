@@ -3,7 +3,7 @@ layout: post
 title:  "Local Docker Swarm"
 date:   2018-09-17 14:02:00 +0200
 categories: General
-published: false
+published: true
 ---
 
 Lately I have been spending a lot of my time dealing with Docker Engines and
@@ -88,3 +88,24 @@ split between the different types. Just remember that only managers can actually
 do things in the swarm (such as deploying stacks).
 
 You can configure the docker machines to work as a swarm with the following commands
+
+```bash
+# Create some docker machine nodes
+docker-machine create manager1 worker1 worker2
+# Get the Docker Machine IPs
+docker-machine ls
+# Initialize the manager node
+docker-machine ssh manager1 "docker swarm init --advertise-addr <MANAGER_IP>"
+# Join the worker nodes
+docker-machine ssh worker1 "docker swarm join --token <WORKER_TOKEN> <MANAGER_IP>"
+docker-machine ssh worker2 "docker swarm join --token <WORKER_TOKEN> <MANAGER_IP>"
+```
+
+Once you have executed this command you will have a set of three machines in the swarm,
+with one manager and two workers. From here you configure your local docker engine to use
+the swarm manager instead by running `eval $(docker-machine env manager)` and you can deploy
+your container stacks directly.
+
+Docker Machine also allows the management and deployment of the docker engine to other environments
+beside your local machine by using different providers during the creation command. Which would allow
+you to build out swarms on stacks like AWS or Openstack if required.
