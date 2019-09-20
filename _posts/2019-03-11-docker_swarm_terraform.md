@@ -3,7 +3,7 @@ layout: post
 title:  "Terraform and Docker Swarm"
 date:   2019-03-11 18:00:00 +0200
 categories: General
-published: false
+published: true
 ---
 
 In order to test a local docker swarm cluster you will quickly find a fairly cool tool called [Docker Machine](https://docs.docker.com/machine/), which
