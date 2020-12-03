@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Remote Docker API"
+title:  Remote Docker API
 date:   2018-05-14 14:02:00 +0200
 categories: General
 ---

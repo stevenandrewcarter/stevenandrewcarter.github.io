@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Local Docker Swarm"
+title:  Local Docker Swarm
 date:   2018-09-17 14:02:00 +0200
 categories: General
 published: true

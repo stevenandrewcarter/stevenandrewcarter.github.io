@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Terraform and Docker Swarm"
+title:  Terraform and Docker Swarm
 date:   2019-03-11 18:00:00 +0200
 categories: General
 published: true
