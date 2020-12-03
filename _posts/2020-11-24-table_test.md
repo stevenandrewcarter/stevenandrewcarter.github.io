@@ -1,9 +1,9 @@
 ---
-layout: 	  post
-title:  	  Refactoring Unit Tests using Table Driven Tests
-date:   	  2020-11-24 18:00:00 +0200
+layout: post
+title: Refactoring Unit Tests using Table Driven Tests
+date: 2020-11-24 18:00:00 +0200
 categories: General
-published:  true
+published: true
 ---
 
 Unit testing is an underused and often forgotten technique for building and debugging software projects. It can be 
