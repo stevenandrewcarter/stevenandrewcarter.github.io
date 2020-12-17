@@ -36,4 +36,4 @@ jekyll-archives:
   layout: category_archives
   permalinks:
     category: /categories/:name/
-theme: jekyll-whiteglass
+theme: jekyll-theme-cayman
