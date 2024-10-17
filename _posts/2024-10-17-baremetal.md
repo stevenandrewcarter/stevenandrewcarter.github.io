@@ -58,4 +58,57 @@ instead managed by the operating system itself, via unattended processes.
 
 ## Remote Installation
 
-Automating the operating system installation can be achieved via directly mounting the installation media, 
+Automating the operating system installation can be achieved via directly mounting the installation media via
+a physically attached CD-ROM drive or USB, or by a virtual media attachment. For the purpose of automation we
+will only consider the virtual media option. Mounting the installation media by itself will not be enough, 
+since most operating system installations require certain options to be selected, such as where the installation
+should be placed, primary network information and default credentials. Using a IPMI solution would often provide
+a remote console that would allow manual inputs of those details as if the installation was happening in front 
+of the user. This is not viable if you want to scale however, since manually inputing the details for each server
+takes time and mistakes are common.
+
+The last option to consider is called PXE booting, which allows the BIOS to send a network request to a specified
+endpoint which contains the installation media. This approach, unlike the virtual media mounting, requires less
+packaging to achieve. It does however require a suitable host server and the appropriate network configuration to
+achieve. PXE booting utilizes DHCP to achieve what is required, but this approach will not be detailed much in this
+article. 
+
+When using the virtual media approach, we need a method to automate the manual steps that are required to install
+the host operating system. This is commonly called _"unattended"_ installs, since the installation does not require
+manual inputs. The _"unattended"_ installs are usually a script, but each operating system will provide its own
+flavour of achieving this. For example, linux operating systems use a **kick start** file, which is normal shell
+commands that will be executed on first boot. Windows on the otherhand uses a XML file called **unattended.xml**
+which provides different XML options for configuring network, executing commands and so on.
+
+In my scenario, ESXi servers are a flavour of linux and as such utilize the **kick start** script. The challenge
+is how to provide this script to the ISO during boot, since the default process is to boot into the manual 
+installation mode when directly booting from the installation media.
+
+## Custom installation media
+
+At this point we have covered the remote management of baremetal servers via IPMI solutions and the concept of
+unattended installs via scripts such as **kick start** files. Tying the two solutions together can be achieved
+either by using a network share which hosts the default installation media and a suitable **kick start** file,
+and then overriding the installation startup to use the **kick start** file via the network share. Or by 
+injecting the **kick start** into the installation media and creating a custom installation media. Be aware 
+that both options require the installation media to be customized, just in different ways.
+
+The first option is to override the default boot sequence in the installation media to instruct the installation
+to retrieve the **kick start** from a network share. Since this requires a network connection to be available, it
+lends itself towards the DHCP style of network configuration instead of static configuration. The benefits of
+using this approach is that the same installation media could be used for each server, since the **kick start**
+customization is stored outside of the media. The drawback is that the installation process must have a working
+network connection in order to retrieve the **kick start**, which normally requires a working DHCP server and
+PXE boot environment.
+
+The other option is create bespoke custom installation media for each server. This means that the **kick start**
+is injected into the installation media and each server will have its own installation media. This approach has
+the advantage of not requiring the network connection to be operating during installation. However it does have
+the drawback that a custom ISO is required for each server in the environment, which depending on the number of
+servers could end up being a large amount of disk space.
+
+It is important to know that existing tools exist that provide these solutions, even if some of these tools have
+a few limitations. Two tools worth looking into are _cobbler_ and _MaaS_ (Metal as a Service), which attempt to
+provide an out the box solution for baremetal provisioning. The tools lean towards the PXE boot style of install,
+so it might not always be possible for every environment. 
+
