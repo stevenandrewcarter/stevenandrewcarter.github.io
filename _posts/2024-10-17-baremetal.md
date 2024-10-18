@@ -50,6 +50,8 @@ refered to as IPMI (Intergrated Platform Management Interface), but the adoption
 interface is often up to the server hardware vendor. For example Dell uses iDRAC (Integrated Dell Remote Access
 Controller), while HP uses iLO (Integrated Lights out). Luckily today there is a standard API that was defined
 called RedFish which aims to provide a common interface to interact and control a baremetal server remotely.
+A added benefit is that tools exist that allow you to simulate the RedFish APIs and multiple libraries are
+available for different languages.
 
 These interfaces however only cover the direct hardware management. You will be able for example reboot the
 server, inspect system health metrics, control physical devices, configure BIOS settings, or mount CD-ROM ISOs.
