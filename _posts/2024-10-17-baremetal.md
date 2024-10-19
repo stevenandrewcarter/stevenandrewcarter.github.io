@@ -4,7 +4,7 @@ title: "Baremetal automation"
 date: 2024-10-17 00:00:00 +0000
 tags: baremetal
 categories: General
-published: false
+published: true
 ---
 
 I recently completed a massive project which involved migrating and rebuilding a set of datacenters. The ask
@@ -17,8 +17,9 @@ _"solved"_ problem. I assumed I would find multiple solutions to complete these 
 that the installation of baremetal servers is the dirty secret kept from most developers.
 
 Unlike the virtualization or containerized solutions, which have multiple solutions and often mature API
-options. Baremetal servers almost have little options, or the options available have only a few realistic
-solutions.
+options. Baremetal installs have few options, or the options available have only a few realistic
+solutions. The processes used are also not as smooth as the ones available for containers or virtualized
+environments. Often feeling complex and _incomplete_.
 
 The following set of posts will detail my journey through the wild world of baremetal installation and
 hopefully it will help future engineers with a little bit of insight on how to solve these problems. This
@@ -35,9 +36,9 @@ device with a single user, having the device installation being guided is accept
 of the device cannot be known at the factory. Unlike virtualized environments, installation of the device can
 be challenging to reset, since just deleting everything and starting again is not as trivial.
 
-Baremetal installation as a result is also more complicated when considering being remote from the device, which
-is the usual scenario for a datacenter deployment (Gone are the days where engineers would need to drive to a
-datacenter and install the servers, at least in most cases). Automating the install of the baremetal also
+Baremetal installation is also more complicated when being remote from the device, which is the usual scenario
+for a datacenter deployment (Gone are the days where engineers would need to drive to a
+datacenter to install the servers, at least in most cases). Automating the install of the baremetal also
 introduces new challenges, such as how to provide the required defaults for an unattended install process.
 
 Without going into detail about networking complexities that also arise from baremetal installation, lets just
@@ -66,21 +67,22 @@ will only consider the virtual media option. Mounting the installation media by 
 since most operating system installations require certain options to be selected, such as where the installation
 should be placed, primary network information and default credentials. Using a IPMI solution would often provide
 a remote console that would allow manual inputs of those details as if the installation was happening in front 
-of the user. This is not viable if you want to scale however, since manually inputing the details for each server
-takes time and mistakes are common.
+of the user. This is not viable if you want to scale however, since manually inputing the details for each
+server takes time and mistakes are common.
 
-The last option to consider is called PXE booting, which allows the BIOS to send a network request to a specified
-endpoint which contains the installation media. This approach, unlike the virtual media mounting, requires less
-packaging to achieve. It does however require a suitable host server and the appropriate network configuration to
-achieve. PXE booting utilizes DHCP to achieve what is required, but this approach will not be detailed much in this
-article. 
+The last option to consider is called PXE booting, which allows the BIOS to send a network request to a 
+specified endpoint which contains the installation media. This approach, unlike the virtual media mounting,
+requires less packaging to achieve. It does however require a suitable host server and the appropriate network 
+configuration to achieve. PXE booting utilizes DHCP to achieve what is required, but this approach will not be
+detailed in this article. 
 
-When using the virtual media approach, we need a method to automate the manual steps that are required to install
-the host operating system. This is commonly called _"unattended"_ installs, since the installation does not require
-manual inputs. The _"unattended"_ installs are usually a script, but each operating system will provide its own
-flavour of achieving this. For example, linux operating systems use a **kick start** file, which is normal shell
-commands that will be executed on first boot. Windows on the otherhand uses a XML file called **unattended.xml**
-which provides different XML options for configuring network, executing commands and so on.
+When using the virtual media approach, we need a method to automate the manual steps that are required to 
+install the host operating system. This is commonly called _"unattended"_ installs, since the installation does
+not require manual inputs. The _"unattended"_ installs are usually a script, but each operating system will 
+provide its own flavour of achieving this. For example, linux operating systems use a **kick start** file, 
+which is normal shell commands that will be executed on first boot. Windows on the otherhand uses a XML file 
+called **unattended.xml** which provides different XML options for configuring network, executing commands and
+so on.
 
 In my scenario, ESXi servers are a flavour of linux and as such utilize the **kick start** script. The challenge
 is how to provide this script to the ISO during boot, since the default process is to boot into the manual 
@@ -96,8 +98,8 @@ injecting the **kick start** into the installation media and creating a custom i
 that both options require the installation media to be customized, just in different ways.
 
 The first option is to override the default boot sequence in the installation media to instruct the installation
-to retrieve the **kick start** from a network share. Since this requires a network connection to be available, it
-lends itself towards the DHCP style of network configuration instead of static configuration. The benefits of
+to retrieve the **kick start** from a network share. Since this requires a network connection to be available,
+it lends itself towards the DHCP style of network configuration instead of static configuration. The benefits of
 using this approach is that the same installation media could be used for each server, since the **kick start**
 customization is stored outside of the media. The drawback is that the installation process must have a working
 network connection in order to retrieve the **kick start**, which normally requires a working DHCP server and
@@ -105,12 +107,14 @@ PXE boot environment.
 
 The other option is create bespoke custom installation media for each server. This means that the **kick start**
 is injected into the installation media and each server will have its own installation media. This approach has
-the advantage of not requiring the network connection to be operating during installation. However it does have
+the advantage of not requiring the network connection to be defined before installation. However it does have
 the drawback that a custom ISO is required for each server in the environment, which depending on the number of
 servers could end up being a large amount of disk space.
 
 It is important to know that existing tools exist that provide these solutions, even if some of these tools have
 a few limitations. Two tools worth looking into are _cobbler_ and _MaaS_ (Metal as a Service), which attempt to
-provide an out the box solution for baremetal provisioning. The tools lean towards the PXE boot style of install,
-so it might not always be possible for every environment. 
+provide an out the box solution for baremetal provisioning. The tools lean towards the PXE boot style of
+install, so it might not always be possible for every environment. 
 
+The next article will cover building a lab environment for baremetal installs and take a quick tour through the
+existing options and tools available.
